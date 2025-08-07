@@ -1,0 +1,100 @@
+//index.js
+import ReactDOM from "react-dom/client";
+import App from "./App";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+
+//App.js
+
+import React from 'react';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import HelloWorld from './Components/HelloWorld';
+import HelloMessage from './Components/HelloMessage';
+import Counter from './Components/Counter';
+import Alert from './Components/Alert';
+
+function App() {
+  return (
+    <div className="d-flex align-items-center justify-content-center vh-100">
+      <div className="border p-4" style={{ marginLeft: '100px', marginRight: '100px' }}>
+        <h3 className="mb-4">UseCase 1 - Components, Props and States</h3>
+        
+        <HelloWorld />
+
+        <h6 className="mt-4"><strong>Single Prop</strong></h6>
+        <HelloMessage name="Euler" />
+
+        <h6 className="mt-4"><strong>Multiple Props</strong></h6>
+        <HelloMessage name="Ramanujam" message="I got this in my dreams" />
+
+        <h6 className="mt-4"><strong>State and Virtual DOM</strong></h6>
+        <Counter />
+
+        <h6 className="mt-4"><strong>Interactive Component - Event Handling</strong></h6>
+        <Alert />
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+//Components
+
+//HelloWorld.js
+
+const HelloWorld = () => {
+  return <p>Hello World Component</p>;
+};
+
+export default HelloWorld;
+
+//HelloMessage.js
+
+const HelloMessage = ({ name, message = "Hi, Hello" }) => {
+  return <p>Message from {name} : {message}</p>;
+};
+
+export default HelloMessage;
+
+//Counter.js
+
+import React, { useState, useEffect } from 'react';
+
+const Counter = () => {
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => setSeconds(prev => prev + 1), 1000);
+    return () => clearInterval(interval); // Cleanup
+  }, []);
+
+  return <p>Time Elapsed : {seconds}</p>;
+};
+
+export default Counter;
+
+//Alert.js
+
+//import React from "react";
+
+import { Button } from 'react-bootstrap';
+
+const Alert = () => {
+  const handleClick = () => {
+    alert("React is a great UI library");
+  };
+
+  return (
+    <Button variant="primary" onClick={handleClick}>
+      Click me Please
+    </Button>
+  );
+};
+
+export default Alert;
+
+
+
+
