@@ -1,0 +1,297 @@
+//index.js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+//App.js
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LandingPage from "./components/LandingPage";
+import RolePage from "./components/RolePage";
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        {/* Landing Page */}
+        <Route path="/" element={<LandingPage />} />
+        {/* Role Selection Page */}
+        <Route path="/role-selection" element={<RolePage />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
+
+//src/components/LandingPage.js
+
+import { Link } from "react-router-dom";
+import logo from "../Assests/sclogo.jpeg";
+import { useEffect, useState } from "react";
+
+function LandingPage() {
+  // typing effect for Hero
+  const words = ["Welcome", "to", "RW", "Tool"];
+  const [displayText, setDisplayText] = useState("");
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (index < words.length) {
+      const timer = setTimeout(() => {
+        setDisplayText((prev) =>
+          prev ? prev + " " + words[index] : words[index]
+        );
+        setIndex((prevIndex) => prevIndex + 1);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [index, words]);
+
+  const featureCards = [
+    {
+      title: "File Access",
+      desc: "Access only files you have permission for, securely managed by Admin.",
+      btn: "File Access",
+      bg: "#00bcd4",
+    },
+    {
+      title: "Report Generation",
+      desc: "Generate reports by Day, Week, Month or custom period.",
+      btn: "Report Generation",
+      bg: "#00a885",
+    },
+    {
+      title: "Bookmarks",
+      desc: "Mark important files as favorites and access them quickly.",
+      btn: "Bookmarks",
+      bg: "#0072ce",
+    },
+  ];
+
+  return (
+    <>
+      {/* Header */}
+      <nav
+        className="navbar navbar-expand-lg"
+        style={{
+          background: "linear-gradient(135deg, #0072ce, #00a885)",
+          padding: "10px 0",
+        }}
+      >
+        <div className="container d-flex justify-content-between align-items-center">
+          <a
+            className="navbar-brand d-flex align-items-center text-white fw-bold"
+            href="#"
+          >
+            <img
+              src={logo}
+              alt="Logo"
+              width="40"
+              height="40"
+              className="me-2"
+              style={{ borderRadius: "6px" }}
+            />
+            RW Tool
+          </a>
+          <ul className="navbar-nav ms-auto">
+            <li className="nav-item">
+              <Link
+                to="/role-selection"
+                className="btn fw-bold"
+                style={{
+                  backgroundColor: "#00b85c",
+                  border: "none",
+                  borderRadius: "25px",
+                  padding: "8px 20px",
+                  color: "#fff",
+                  boxShadow: "0px 3px 8px rgba(0,0,0,0.2)",
+                }}
+              >
+                Login
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section
+        className="text-center py-5 text-white"
+        style={{
+          background: "linear-gradient(135deg, #0072ce, #00a885)",
+        }}
+      >
+        <div className="container">
+          <h1
+            className="fw-bold display-4 mb-3"
+            style={{
+              textShadow: "1px 1px 6px rgba(0,0,0,0.2)",
+              minHeight: "70px",
+            }}
+          >
+            {displayText}
+          </h1>
+          <p
+            className="lead"
+            style={{ maxWidth: "700px", margin: "auto", color: "#eaf6f6" }}
+          >
+            Efficiently manage files, generate reports, and track activity securely.
+          </p>
+          <Link
+            to="/role-selection"
+            className="btn btn-lg mt-4 fw-bold"
+            style={{
+              background: "#00b85c",
+              border: "none",
+              padding: "12px 30px",
+              borderRadius: "50px",
+              color: "#fff",
+              boxShadow: "0px 4px 12px rgba(0,0,0,0.2)",
+            }}
+          >
+            Login to Get Started
+          </Link>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-5">
+        <div className="container">
+          <div className="row text-center g-4">
+            {featureCards.map((card, index) => (
+              <div className="col-md-4" key={index}>
+                <div
+                  className="card shadow-lg h-100 border-0 text-white"
+                  style={{
+                    backgroundColor: card.bg,
+                    borderRadius: "18px",
+                    transition: "transform 0.3s ease",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.transform = "translateY(-8px)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.transform = "translateY(0)")
+                  }
+                >
+                  <div className="card-body p-4">
+                    <h5 className="fw-bold">{card.title}</h5>
+                    <p>{card.desc}</p>
+                    <Link
+                      to="/role-selection"
+                      className="btn btn-light fw-bold mt-3"
+                      style={{
+                        borderRadius: "25px",
+                        padding: "8px 20px",
+                        color: card.bg,
+                      }}
+                    >
+                      {card.btn}
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer
+        className="text-center py-3"
+        style={{ backgroundColor: "#e6f7f5", color: "#004b87" }}
+      >
+        <div className="container">
+          <p className="mb-0">&copy; {new Date().getFullYear()} RW Tool</p>
+        </div>
+      </footer>
+    </>
+  );
+}
+
+export default LandingPage;
+
+//src/components/RolePage.js
+
+import React from "react";
+import profileIcon from "../Assests/Profile.jpg";
+
+function RolePage() {
+  return (
+    <div
+      className="d-flex justify-content-center align-items-center vh-100"
+      style={{
+        background: "linear-gradient(-45deg, #007b5e, #00a884, #00bcd4, #4cafef)",
+        backgroundSize: "400% 400%",
+        animation: "gradientBG 8s ease infinite",
+      }}
+    >
+      <style>
+        {`
+          @keyframes gradientBG {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+          }
+        `}
+      </style>
+
+      <div
+        className="card shadow-lg text-center"
+        style={{
+          width: "350px",
+          borderRadius: "20px",
+          padding: "30px",
+          background: "rgba(255, 255, 255, 0.95)",
+          backdropFilter: "blur(6px)",
+          border: "none",
+        }}
+      >
+        <img
+          src={profileIcon}
+          alt="Profile Icon"
+          style={{
+            width: "100px",
+            height: "100px",
+            borderRadius: "50%",
+            objectFit: "cover",
+            border: "3px solid #ccc",
+            marginBottom: "20px",
+            display: "block",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        />
+        <h5 className="fw-bold mb-4" style={{ color: "#333" }}>
+          Select Your Role
+        </h5>
+
+        <button
+          className="btn btn-outline-primary fw-bold mb-3 w-100"
+          style={{ borderRadius: "10px", padding: "10px", fontSize: "16px" }}
+        >
+          ADMIN
+        </button>
+        <button
+          className="btn btn-outline-success fw-bold w-100"
+          style={{ borderRadius: "10px", padding: "10px", fontSize: "16px" }}
+        >
+          USER
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default RolePage;
+
+//src/assests/Profile.jpg
+//src/assests/sclogo.jpeg
